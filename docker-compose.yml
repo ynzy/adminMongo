@@ -1,0 +1,60 @@
+version: '2'
+#####################################################################################
+# Warning!!!
+# Don't use for mongo folders that are mounted to your system or symlinked,
+# only use direct folders on server filesystem as /srv/...
+# Notice:
+# Better use `docker volumes` that located in /var/lib/docker/volumes/....
+# To use it:
+# volumes:
+#   - mongo-db:/data/db
+# and in bottom of file add
+# volumes:
+#   mongo-db:
+# After such type of mounting and running container,
+# you can locate folder by containername (for ex. mongo) as:
+# docker inspect -f '{{(index .Mounts 0).Source }}' mongo
+#####################################################################################
+services:
+
+    mongo:
+      container_name: mongo
+      image: mongo:3.4.9
+      restart: always
+      ports:
+        - 27017:27017
+      volumes:
+#        - /srv/mongo-data:/data/db
+        - mongo-db:/data/db
+#      command: mongod --auth
+      networks:
+        - mongo_net
+
+    adminmongo:
+      container_name: adminmongo
+      build: .
+      image: sandkit/admin-mongo
+      restart: always
+      ports:
+        - 8181:8181
+      environment:
+        - HOST=0.0.0.0
+        - PORT=8181
+        - LOCALE=zh-cn
+        - CONN_NAME=localhost-mongodb
+        - DB_HOST=mongo
+        - DB_PORT=27017
+        - DB_NAME=bmoss
+        - DB_USERNAME=admin
+        - DB_PASSWORD=s1naP1s20FX
+      depends_on:
+        - mongo
+      networks:
+        - mongo_net
+
+volumes:
+  mongo-db:
+
+networks:
+  mongo_net:
+    driver: bridge
