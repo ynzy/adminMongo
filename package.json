@@ -13,7 +13,7 @@
     "url": "https://github.com/mrvautin/adminmongo/issues"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "LOCALE=zh-cn node app.js",
     "test": "find ./tests -name '*.js' | xargs mocha -R spec -t 5000",
     "packageOsx": "electron-packager ./ adminMongo --out=releases/ --platform=darwin --arch=x64 --prune --overwrite --ignore=releases/* --icon=public/logo.icns",
     "packageWin32": "electron-packager ./ adminMongo --out=releases/ --platform=win32 --arch=ia32 --prune --overwrite --ignore=releases/* --icon=public/logo.ico",
@@ -82,7 +82,7 @@
     "eslint-config-standard": "^5.3.5",
     "eslint-plugin-promise": "^2.0.0",
     "eslint-plugin-standard": "^2.0.0",
-    "jsdom": "^9.4.1",
+    "jsdom": "^11.0.0",
     "mocha": "^2.5.3",
     "mocha-jsdom": "^1.1.0",
     "supertest": "^1.2.0"
